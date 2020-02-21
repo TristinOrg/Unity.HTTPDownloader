@@ -3,9 +3,8 @@ using System.Timers;
 using System.IO;
 using System.Threading;
 using Timer = System.Timers.Timer;
-using UnityEngine;
 
-public class HTTPDownloadBase : MonoBehaviour
+public class HTTPDownloadBase
 {
     // 下载进度
     public virtual float Progress

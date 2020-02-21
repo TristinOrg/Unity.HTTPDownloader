@@ -4,7 +4,6 @@ using System.IO;
 using Timer = System.Timers.Timer;
 using System.Threading;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class HTTPDownloadBatch : HTTPDownloadBase
 {

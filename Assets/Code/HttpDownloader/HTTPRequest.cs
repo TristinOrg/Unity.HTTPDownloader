@@ -1,28 +1,34 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Net;
 using System.IO;
-
+/// <summary>
+/// 请求消息类
+/// </summary>
 public static class HTTPRequest 
 {
+    /// <summary>
+    /// 根据参数获取返回数据
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     public static (FileStream,Stream,long,long) Get(HTTPParamIndie param)
     {
         if (param == null)
-        {
-            Debug.Log("[HTTPRequest.Get] param is null");
-            return (null,null,0,0);
-        }
+            return GetDefaultReturn();
 
         // 构建文件流
-        FileStream fs   = new FileStream(param.Path, FileMode.OpenOrCreate, FileAccess.Write);
+        FileStream fs       = new FileStream(param.Path, FileMode.OpenOrCreate, FileAccess.Write);
         // 文件当前长度
-        long fileLength = fs.Length;
-        long TotalLength = 0;
+        long fileLength     = fs.Length;
+        long TotalLength    = 0;
         //设置当前文件数据位置
         fs.Seek(fileLength, SeekOrigin.Begin);
 
         // 发送请求开始下载
         HttpWebRequest request  = WebRequest.Create(param.Url) as HttpWebRequest;
+        if (request == null)
+            return GetDefaultReturn();
+
         request.Timeout         = param.TimeOut;
 
         WebResponse response    = request.GetResponse();
@@ -43,5 +49,14 @@ public static class HTTPRequest
             stream.ReadTimeout  = param.TimeOut;
         }
         return (fs,stream,fileLength,TotalLength);
+    }
+
+    /// <summary>
+    /// 返回默认参数
+    /// </summary>
+    /// <returns></returns>
+    private static (FileStream, Stream, long, long) GetDefaultReturn()
+    {
+        return (null, null, 0, 0);
     }
 }
