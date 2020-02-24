@@ -52,7 +52,7 @@ public class HTTPTest : MonoBehaviour
     {
         t.Dispose();
         indie.ResetData();
-        //batch.ResetData();
+        batch.ResetData();
     }
     private void timeCallBack(object source,ElapsedEventArgs args)
     {

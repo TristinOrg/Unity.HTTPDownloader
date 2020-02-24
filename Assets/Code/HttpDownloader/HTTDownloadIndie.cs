@@ -23,11 +23,19 @@ public class HTTPDownloadIndie:HTTPDownloadBase
     //目标数据md5值
     private string          _md5;
 
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    /// <param name="param"></param>
     public HTTPDownloadIndie(HTTPParamIndie param)
     {
         SetParam(param);
     }
 
+    /// <summary>
+    /// 单独设置参数
+    /// </summary>
+    /// <param name="param"></param>
     private void SetParam(HTTPParamIndie param)
     {
         _param = param;
@@ -65,17 +73,11 @@ public class HTTPDownloadIndie:HTTPDownloadBase
     private void StartDownLoad() {
         try {
             SetData();
-            //md5校验
-            if(!MD5Verfied())
-            {
-                _param.MD5FailCallBack?.Invoke();
-                Error           = "MD5 is not verfied";
-                return;
-            }
 
             //数据已下载完毕
             if (_fileStream == null || _stream == null)
             {
+                ResetData();
                 if (FileLength >= TotalLength)
                 {
                     Progress    = 1;
@@ -83,6 +85,16 @@ public class HTTPDownloadIndie:HTTPDownloadBase
                 }
                 return;
             }
+
+            //md5校验
+            if (!MD5Verfied())
+            {
+                _param.MD5FailCallBack?.Invoke();
+                Error = "MD5 is not verfied";
+                ResetData();
+                return;
+            }
+
             StartReadStream();
 
         } catch (Exception e) {
@@ -145,11 +157,18 @@ public class HTTPDownloadIndie:HTTPDownloadBase
         base.ResetData();
 
         _mainThread.Abort();
-        _stream.Close();
-        _stream.Dispose();
 
-        _fileStream.Close();
-        _fileStream.Dispose();
+        if (_stream != null)
+        {
+            _stream.Close();
+            _stream.Dispose();
+        }
+
+        if (_fileStream != null)
+        {
+            _fileStream.Close();
+            _fileStream.Dispose();
+        }
 
         if (_param.IsCalcSpeed)
         {

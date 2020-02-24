@@ -20,7 +20,7 @@ public static class HTTPRequest
         FileStream fs       = new FileStream(param.Path, FileMode.OpenOrCreate, FileAccess.Write);
         // 文件当前长度
         long fileLength     = fs.Length;
-        long TotalLength    = 0;
+        long totalLength    = 0;
         //设置当前文件数据位置
         fs.Seek(fileLength, SeekOrigin.Begin);
 
@@ -32,23 +32,29 @@ public static class HTTPRequest
         request.Timeout         = param.TimeOut;
 
         WebResponse response    = request.GetResponse();
-        if(response != null)
-        {
-            //获取文件总大小
-            TotalLength = response.ContentLength;
-            if (fileLength >= TotalLength)
-                return (null,null,fileLength,TotalLength);
-        }
+        if (response == null)
+            return GetDefaultReturn();
+
+         //获取文件总大小
+         totalLength = response.ContentLength;       
+         if (fileLength >= totalLength)
+            return (null,null,fileLength, totalLength);
+
         request.AddRange(fs.Length);
         response = request.GetResponse();
+        if (response == null)
+            return GetDefaultReturn();
 
         // 读取文件内容
         Stream stream           = response.GetResponseStream();
+        if (stream == null)
+            return GetDefaultReturn();
+
         if (stream.CanTimeout)
         {
             stream.ReadTimeout  = param.TimeOut;
         }
-        return (fs,stream,fileLength,TotalLength);
+        return (fs,stream,fileLength, totalLength);
     }
 
     /// <summary>
