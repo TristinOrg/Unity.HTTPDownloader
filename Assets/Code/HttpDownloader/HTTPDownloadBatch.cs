@@ -121,6 +121,7 @@ public class HTTPDownloadBatch : HTTPDownloadBase
     public void SetParam(HTTPParamBatch param)
     {
         _param = param;
+        HTTPTask.MaxThread = _param.MaxThread;
     }
 
     /// <summary>
