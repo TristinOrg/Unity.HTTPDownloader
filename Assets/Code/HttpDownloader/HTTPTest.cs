@@ -53,11 +53,11 @@ public class HTTPTest : MonoBehaviour
         t.Dispose();
         HTTPTask.AbortAll();
         indie.ResetData();
-        //batch.ResetData();
+        batch.ResetData();
     }
     private void timeCallBack(object source,ElapsedEventArgs args)
     {
         Debug.Log("--indie "+indie.Progress + ": progress " + indie.Status + " : status " + indie.Speed + " kbs/s " + indie.Error + " error");
-        //Debug.Log("--batch "+batch.Progress + ": progress " + batch.Status + " : status " + batch.Speed + " kbs/s "+batch.DownloadedCount+" :downloadedCount "+batch.Error+" error");
+        Debug.Log("--batch "+batch.Progress + ": progress " + batch.Status + " : status " + batch.Speed + " kbs/s "+batch.DownloadedCount+" :downloadedCount "+batch.Error+" error");
     }
 }

@@ -113,6 +113,10 @@ public static class HTTPTask
         }
     }
 
+    /// <summary>
+    /// 停止任务，并检测下一个任务
+    /// </summary>
+    /// <param name="param"></param>
     private static void StopTask(HTTPParamIndie param)
     {
         _lstThread.Remove(param.RelateThread);
@@ -120,6 +124,9 @@ public static class HTTPTask
         param.RelateThread.Abort();
     }
 
+    /// <summary>
+    /// 如果还有任务，继续下载
+    /// </summary>
     private static void ContinueTask()
     {
         if (_queueParams.Count > 0)
@@ -130,6 +137,9 @@ public static class HTTPTask
         }
     }
 
+    /// <summary>
+    /// 停止所有任务
+    /// </summary>
     public static void AbortAll()
     {
         for (int i = 0; i < _lstThread.Count; i++)
